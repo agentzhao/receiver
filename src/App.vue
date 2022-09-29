@@ -1,38 +1,103 @@
 <template>
-  <!-- opens on spectators phone, should show something that is not sus -->
   <div class="w-screen h-screen bg-black">
-    <div class="mx-auto w-2/3">
-      <h1 class="text-white">Receiver</h1>
-      <button class="bg-white">
-        <a href="youtube://screen">Should open youtube in app</a>
+    <div class="flex flex-col justify-center items-center mx-auto w-2/3">
+      <h1 class="my-10 text-3xl text-white">Receiver</h1>
+      <h3 class="mb-10 text-xl text-white">ID: {{ id }}</h3>
+      <button class="mb-10 w-20 h-10 bg-orange-400" @click="timer">
+        start
       </button>
+      <button class="bg-red-400" @click="redirecttest">redirecttest</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-function getMobileOperatingSystem() {
-  var userAgent = navigator.userAgent || navigator.vendor;
+import { ref } from "vue";
+import NoSleep from "nosleep.js";
 
-  // Windows Phone must come first because its UA also contains "Android"
-  if (/windows phone/i.test(userAgent)) {
-    console.log("Windows Phone");
-    return "Windows Phone";
+const isMobile = "ontouchstart" in document.documentElement;
+
+var noSleep = new NoSleep();
+// Enable wake lock.
+// (must be wrapped in a user input event handler e.g. a mouse or touch handler)
+document.addEventListener(
+  "click",
+  function enableNoSleep() {
+    document.removeEventListener("click", enableNoSleep, false);
+    noSleep.enable();
+    console.log("nosleep");
+  },
+  false
+);
+
+//view-source:https://iyt.pw/marc&youtube_web=1
+function redirectYoutube(songUrl: string) {
+  var time = ((new Date().getTime() - start) / 1000).toFixed();
+  var embedUrl = songUrl.replace("watch?v=", "embed/");
+  embedUrl = embedUrl + "?start=" + time + "&autoplay=1&mute=1";
+  console.log("redirecting to", embedUrl);
+
+  if (isMobile) {
+    window.location.replace("https://www.google.com");
+    window.location.assign("https://m.youtube.com");
+    window.location.assign(embedUrl.replace("://www", "://m"));
+  } else {
+    window.location.replace("https://www.google.com");
+    window.location.assign("https://www.youtube.com");
+    window.location.assign(embedUrl);
   }
-
-  if (/android/i.test(userAgent)) {
-    console.log("Android");
-    return "Android";
-  }
-
-  // iOS detection from: http://stackoverflow.com/a/9039885/177710
-  if (/iPad|iPhone|iPod/.test(userAgent)) {
-    console.log("iOS");
-    return "iOS";
-  }
-
-  return "unknown";
 }
+
+function redirectSpotify(songUrl: string) {
+  if (isMobile) {
+    window.location.replace("https://www.google.com");
+    window.location.assign("https://open.spotify.com");
+    window.location.assign(songUrl);
+  } else {
+    window.location.replace("https://www.google.com");
+    window.location.assign("https://open.spotify.com");
+    window.location.assign(songUrl);
+  }
+}
+
+function redirecttest() {
+  window.location.replace("https://www.google.com");
+  window.location.replace("https://www.youtube.com");
+  window.location.replace(
+    "https://www.youtube.com/embed/75-Com9Bo_s?start=30&autoplay=1&mute=1"
+  );
+}
+
+var id = 0;
+id = Math.floor(Math.random() * 1000 + 1);
+
+var start = 0;
+function timer() {
+  start = new Date().getTime();
+}
+
+// websocket
+const ws = new WebSocket("wss://sock.agentzhao.me");
+
+// Connection opened
+ws.addEventListener("open", function (event) {
+  console.log("Connected with id: " + id);
+  ws.send("receiver " + id);
+});
+
+ws.addEventListener("message", (event) => {
+  console.log("Server:", event.data);
+  try {
+    const data = JSON.parse(event.data);
+    if (data.id == id && data.platform == "youtube") {
+      redirectYoutube(data.songUrl);
+    } else if (data.id == id && data.platform == "spotify") {
+      redirectSpotify(data.songUrl);
+    }
+  } catch (e) {
+    //nothing
+  }
+});
 </script>
 
 <style scoped></style>
