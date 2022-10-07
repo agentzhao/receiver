@@ -8,7 +8,7 @@
     />
     <input
       type="text"
-      class="absolute inset-x-0 top-2 ml-12 w-8/12 h-6 bg-transparent"
+      class="absolute inset-x-0 top-2 ml-12 w-8/12 h-6 bg-transparent outline-none"
       id="input"
     />
   </div>
