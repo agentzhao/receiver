@@ -1,13 +1,16 @@
 <template>
-  <div class="w-screen h-screen bg-black">
-    <div class="flex flex-col justify-center items-center mx-auto w-2/3">
-      <h1 class="my-10 text-3xl text-white">Receiver</h1>
-      <h3 class="mb-10 text-xl text-white">ID: {{ id }}</h3>
-      <button class="mb-10 w-20 h-10 bg-orange-400" @click="timer">
-        start
-      </button>
-      <button class="bg-red-400" @click="redirecttest">redirecttest</button>
-    </div>
+  <div class="w-screen h-screen bg-black" @click="timer">
+    <img
+      src="https://user-images.githubusercontent.com/20024592/194550744-14659755-95ad-4bb0-bda8-d26c6c668ae4.png"
+      class="w-screen"
+      @click="timer"
+      id="youtube"
+    />
+    <input
+      type="text"
+      class="absolute inset-x-0 top-2 ml-12 w-8/12 h-6 bg-transparent"
+      id="input"
+    />
   </div>
 </template>
 
@@ -26,6 +29,11 @@ document.addEventListener(
     document.removeEventListener("click", enableNoSleep, false);
     noSleep.enable();
     console.log("nosleep");
+
+    document.querySelector("input")!.focus();
+    // change image source
+    document.querySelector("img")!.src =
+      "https://user-images.githubusercontent.com/20024592/194550994-14b5c0f6-eafa-4a01-a4ab-9cbd0b9e887b.png";
   },
   false
 );
@@ -39,33 +47,30 @@ function redirectYoutube(songUrl: string) {
 
   if (isMobile) {
     window.location.replace("https://www.google.com");
-    window.location.assign("https://m.youtube.com");
-    window.location.assign(embedUrl.replace("://www", "://m"));
+    window.location.href = "https://m.youtube.com";
+    window.location.href = embedUrl.replace("://www", "://m");
   } else {
     window.location.replace("https://www.google.com");
-    window.location.assign("https://www.youtube.com");
-    window.location.assign(embedUrl);
+    window.location.href = "https://www.youtube.com";
+    window.location.href = embedUrl;
   }
 }
 
 function redirectSpotify(songUrl: string) {
   if (isMobile) {
     window.location.replace("https://www.google.com");
-    window.location.assign("https://open.spotify.com");
-    window.location.assign(songUrl);
+    window.location.href = "https://open.spotify.com";
+    window.location.href = songUrl;
   } else {
     window.location.replace("https://www.google.com");
-    window.location.assign("https://open.spotify.com");
-    window.location.assign(songUrl);
+    window.location.href = "https://open.spotify.com";
+    window.location.href = songUrl;
   }
 }
 
 function redirecttest() {
-  window.location.replace("https://www.google.com");
-  window.location.replace("https://www.youtube.com");
-  window.location.replace(
-    "https://www.youtube.com/embed/75-Com9Bo_s?start=30&autoplay=1&mute=1"
-  );
+  window.location.assign("https://www.google.com");
+  window.location.assign("https://www.youtube.com");
 }
 
 var id = 0;
@@ -89,9 +94,10 @@ ws.addEventListener("message", (event) => {
   console.log("Server:", event.data);
   try {
     const data = JSON.parse(event.data);
-    if (data.id == id && data.platform == "youtube") {
+    // if (data.id == id) return;
+    if (data.platform == "youtube") {
       redirectYoutube(data.songUrl);
-    } else if (data.id == id && data.platform == "spotify") {
+    } else if (data.platform == "spotify") {
       redirectSpotify(data.songUrl);
     }
   } catch (e) {
