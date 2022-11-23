@@ -11,14 +11,6 @@
       class="absolute inset-x-0 top-2 ml-12 w-8/12 h-6 bg-transparent outline-none"
       id="input"
     />
-    <button class="z-50 bg-red-50" id="button" @click="test2">test2</button>
-    <button
-      class="absolute z-50 bg-yellow-50"
-      id="button"
-      @click="redirecttest"
-    >
-      redirecttest
-    </button>
   </div>
 </template>
 
@@ -51,13 +43,13 @@ function redirectYoutube(songUrl: string) {
   var time = ((new Date().getTime() - start) / 1000).toFixed();
   // var embedUrl = songUrl.replace("watch?v=", "embed/");
   // embedUrl = embedUrl + "?start=" + time + "&autoplay=1&mute=1";
-  songUrl = songUrl + "?start=" + time;
+  songUrl = songUrl + "&t=" + time + "s";
   console.log("redirecting to", songUrl);
 
   if (isMobile) {
     window.location.replace("https://www.google.com");
     window.location.href = "https://m.youtube.com";
-    window.location.href = songUrl.replace("://www", "://m");
+    window.location.href = songUrl;
   } else {
     window.location.replace("https://www.google.com");
     window.location.href = "https://www.youtube.com";
@@ -75,18 +67,6 @@ function redirectSpotify(songUrl: string) {
     window.location.href = "https://open.spotify.com";
     window.location.href = songUrl;
   }
-}
-
-function redirecttest() {
-  window.location.replace(
-    "https://www.google.com/url?sa=t&source=web&rct=j&url=https://m.youtube.com/watch%3Fv%3D0IAPZzGSbME&ved=2ahUKEwib8LLZvcP7AhUS6XMBHRHUCuYQo7QBegQICRAF&usg=AOvVaw3Pm3DXmptaxvMjLsLs3OUm"
-  );
-}
-
-function test2() {
-  window.location.replace(
-    "https://www.youtube.com/watch?app=desktop&v=0IAPZzGSbME"
-  );
 }
 
 var id = 0;
