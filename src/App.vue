@@ -43,7 +43,7 @@ function redirectYoutube(songUrl: string) {
   var time = ((new Date().getTime() - start) / 1000).toFixed();
   // var embedUrl = songUrl.replace("watch?v=", "embed/");
   // embedUrl = embedUrl + "?start=" + time + "&autoplay=1&mute=1";
-  songUrl = songUrl + "&t=" + time + "s";
+  songUrl = songUrl + "?t=" + time + "s";
   console.log("redirecting to", songUrl);
 
   if (isMobile) {
