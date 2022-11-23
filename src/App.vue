@@ -1,11 +1,11 @@
 <template>
   <div class="w-screen h-screen bg-black" @click="timer">
-    <!-- <img -->
-    <!--   src="https://user-images.githubusercontent.com/20024592/194550744-14659755-95ad-4bb0-bda8-d26c6c668ae4.png" -->
-    <!--   class="w-screen" -->
-    <!--   @click="timer" -->
-    <!--   id="youtube" -->
-    <!-- /> -->
+    <img
+      src="https://user-images.githubusercontent.com/20024592/194550744-14659755-95ad-4bb0-bda8-d26c6c668ae4.png"
+      class="w-screen"
+      @click="timer"
+      id="youtube"
+    />
     <input
       type="text"
       class="absolute inset-x-0 top-2 ml-12 w-8/12 h-6 bg-transparent outline-none"
@@ -49,18 +49,19 @@ document.addEventListener(
 //view-source:https://iyt.pw/marc&youtube_web=1
 function redirectYoutube(songUrl: string) {
   var time = ((new Date().getTime() - start) / 1000).toFixed();
-  var embedUrl = songUrl.replace("watch?v=", "embed/");
-  embedUrl = embedUrl + "?start=" + time + "&autoplay=1&mute=1";
-  console.log("redirecting to", embedUrl);
+  // var embedUrl = songUrl.replace("watch?v=", "embed/");
+  // embedUrl = embedUrl + "?start=" + time + "&autoplay=1&mute=1";
+  songUrl = songUrl + "?start=" + time;
+  console.log("redirecting to", songUrl);
 
   if (isMobile) {
     window.location.replace("https://www.google.com");
     window.location.href = "https://m.youtube.com";
-    window.location.href = embedUrl.replace("://www", "://m");
+    window.location.href = songUrl.replace("://www", "://m");
   } else {
     window.location.replace("https://www.google.com");
     window.location.href = "https://www.youtube.com";
-    window.location.href = embedUrl;
+    window.location.href = songUrl;
   }
 }
 
