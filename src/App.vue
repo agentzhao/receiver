@@ -1,16 +1,24 @@
 <template>
   <div class="w-screen h-screen bg-black" @click="timer">
-    <img
-      src="https://user-images.githubusercontent.com/20024592/194550744-14659755-95ad-4bb0-bda8-d26c6c668ae4.png"
-      class="w-screen"
-      @click="timer"
-      id="youtube"
-    />
+    <!-- <img -->
+    <!--   src="https://user-images.githubusercontent.com/20024592/194550744-14659755-95ad-4bb0-bda8-d26c6c668ae4.png" -->
+    <!--   class="w-screen" -->
+    <!--   @click="timer" -->
+    <!--   id="youtube" -->
+    <!-- /> -->
     <input
       type="text"
       class="absolute inset-x-0 top-2 ml-12 w-8/12 h-6 bg-transparent outline-none"
       id="input"
     />
+    <button class="z-50 bg-red-50" id="button" @click="test2">test2</button>
+    <button
+      class="absolute z-50 bg-yellow-50"
+      id="button"
+      @click="redirecttest"
+    >
+      redirecttest
+    </button>
   </div>
 </template>
 
@@ -69,8 +77,15 @@ function redirectSpotify(songUrl: string) {
 }
 
 function redirecttest() {
-  window.location.assign("https://www.google.com");
-  window.location.assign("https://www.youtube.com");
+  window.location.replace(
+    "https://www.google.com/url?sa=t&source=web&rct=j&url=https://m.youtube.com/watch%3Fv%3D0IAPZzGSbME&ved=2ahUKEwib8LLZvcP7AhUS6XMBHRHUCuYQo7QBegQICRAF&usg=AOvVaw3Pm3DXmptaxvMjLsLs3OUm"
+  );
+}
+
+function test2() {
+  window.location.replace(
+    "https://www.youtube.com/watch?app=desktop&v=0IAPZzGSbME"
+  );
 }
 
 var id = 0;
