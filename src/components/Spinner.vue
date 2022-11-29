@@ -20,7 +20,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 64px;
+  width: 48px;
   margin-left: -32px;
   z-index: 18;
   pointer-events: none;

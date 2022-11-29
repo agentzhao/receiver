@@ -4,6 +4,7 @@
   </div>
   <div class="w-screen h-screen bg-black">
     <Spinner />
+    <Controls />
   </div>
 </template>
 
@@ -11,10 +12,10 @@
 import { ref } from "vue";
 import NoSleep from "nosleep.js";
 import Spinner from "./components/Spinner.vue";
+import Controls from "./components/Controls.vue";
 
 const isMobile = "ontouchstart" in document.documentElement;
 var start = 0;
-
 var noSleep = new NoSleep();
 document.addEventListener(
   "click",
