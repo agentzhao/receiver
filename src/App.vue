@@ -1,28 +1,21 @@
 <template>
-  <div class="w-screen h-screen bg-black" @click="timer">
-    <img
-      src="https://user-images.githubusercontent.com/20024592/194550744-14659755-95ad-4bb0-bda8-d26c6c668ae4.png"
-      class="w-screen"
-      @click="timer"
-      id="youtube"
-    />
-    <input
-      type="text"
-      class="absolute inset-x-0 top-2 ml-12 w-8/12 h-6 bg-transparent outline-none"
-      id="input"
-    />
+  <div class="h-6 bg-white">
+    <p class="text-center">↓ Scroll down to hide navbar ↓</p>
+  </div>
+  <div class="w-screen h-screen bg-black">
+    <Spinner />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 import NoSleep from "nosleep.js";
+import Spinner from "./components/Spinner.vue";
 
 const isMobile = "ontouchstart" in document.documentElement;
+var start = 0;
 
 var noSleep = new NoSleep();
-// Enable wake lock.
-// (must be wrapped in a user input event handler e.g. a mouse or touch handler)
 document.addEventListener(
   "click",
   function enableNoSleep() {
@@ -30,10 +23,8 @@ document.addEventListener(
     noSleep.enable();
     console.log("nosleep");
 
-    document.querySelector("input")!.focus();
-    // change image source
-    document.querySelector("img")!.src =
-      "https://user-images.githubusercontent.com/20024592/194550994-14b5c0f6-eafa-4a01-a4ab-9cbd0b9e887b.png";
+    // start timer also
+    start = new Date().getTime();
   },
   false
 );
@@ -69,21 +60,12 @@ function redirectSpotify(songUrl: string) {
   }
 }
 
-var id = 0;
-id = Math.floor(Math.random() * 1000 + 1);
-
-var start = 0;
-function timer() {
-  start = new Date().getTime();
-}
-
 // websocket
 const ws = new WebSocket("wss://sock.agentzhao.me");
 
 // Connection opened
 ws.addEventListener("open", function (event) {
-  console.log("Connected with id: " + id);
-  ws.send("receiver " + id);
+  console.log("Connected to websocket");
 });
 
 ws.addEventListener("message", (event) => {
